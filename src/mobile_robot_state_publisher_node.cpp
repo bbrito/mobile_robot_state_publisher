@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 					 + transformStamped.transform.rotation.x * transformStamped.transform.rotation.y);
 		t4 = +1.0 - 2.0 * (ysqr + transformStamped.transform.rotation.z * transformStamped.transform.rotation.z);
 
-		pose_msg.orientation.z = atan2(t3, t4);
+		pose_msg.orientation.z = atan2(t3, t4) - 1.57079632679;
 		pose_msg.position.x = transformStamped.transform.translation.x;
 		pose_msg.position.y = transformStamped.transform.translation.y;
 		state_pub_.publish(pose_msg);
