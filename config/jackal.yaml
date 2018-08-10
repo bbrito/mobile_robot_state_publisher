@@ -5,5 +5,5 @@ rate: 40
 #robot base frame
 base_frame: base_link
 #map frame
-root_frame: map
+root_frame: odom
 robot_state_topic: /robot_state
