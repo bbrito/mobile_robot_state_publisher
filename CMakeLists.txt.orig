@@ -9,7 +9,10 @@ find_package(catkin REQUIRED COMPONENTS
         tf2
         tf2_ros
         tf2_geometry_msgs
+<<<<<<< HEAD
+=======
 	nav_msgs
+>>>>>>> b64c0a5a25927e95b15960b38af216c6aa806b62
         )
 
 ###################################
@@ -18,7 +21,11 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
         #  INCLUDE_DIRS include
         #  LIBRARIES turtle_tf2
+<<<<<<< HEAD
         CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs tf2 tf2_ros
+=======
+        CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs tf2 tf2_ros nav_msgs
+>>>>>>> b64c0a5a25927e95b15960b38af216c6aa806b62
         #  DEPENDS system_lib
 )
 
@@ -42,4 +49,8 @@ install(TARGETS mobile_robot_state_publisher_node
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+<<<<<<< HEAD
         )
+=======
+        )
+>>>>>>> b64c0a5a25927e95b15960b38af216c6aa806b62

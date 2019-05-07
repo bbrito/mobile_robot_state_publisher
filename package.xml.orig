@@ -23,7 +23,10 @@
   <build_depend>tf2</build_depend>
   <build_depend>tf2_ros</build_depend>
   <build_depend>tf2_geometry_msgs</build_depend>
+<<<<<<< HEAD
+=======
   <build_depend>nav_msgs</build_depend>
+>>>>>>> b64c0a5a25927e95b15960b38af216c6aa806b62
 
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
@@ -32,6 +35,9 @@
   <exec_depend>tf2</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>tf2_geometry_msgs</exec_depend>
+<<<<<<< HEAD
+=======
   <exec_depend>nav_msgs</exec_depend>
+>>>>>>> b64c0a5a25927e95b15960b38af216c6aa806b62
 
 </package>
