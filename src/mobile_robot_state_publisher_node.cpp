@@ -46,16 +46,8 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "mobile_robot_state_publisher_node");
 	ros::NodeHandle n;
 	ros::Subscriber robot_state_sub_;
-	//TO BE IMPLEMENTED
-	/*MobileRobotStatePublisher* MobileRobotStatePublisher = new MobileRobotStatePublisher();
 
-	if (!MobileRobotStatePublisher->initialize())
-	{
-		ROS_ERROR("Failed to initialize TwistController");
-		return -1;
-	}
-	*/
-	robot_state_sub_ = n.subscribe("/ekf_localization", 1, VelocityCallBack);
+
 	double node_rate;
 	if (!n.getParam(ros::this_node::getName()+"/rate", node_rate))
 	{
@@ -83,6 +75,15 @@ int main(int argc, char **argv)
 		ROS_ERROR_STREAM("mobile_robot_state_publisher_node Parameter " << ros::this_node::getName()+"/robot_state_topic not set");
 		return 0;
 	}
+
+	string vel_state_topic;
+	if (!n.getParam(ros::this_node::getName()+"/vel_state_topic", vel_state_topic))
+	{
+		ROS_ERROR_STREAM("mobile_robot_state_publisher_node Parameter " << ros::this_node::getName()+"/vel_state_topic not set");
+		return 0;
+	}
+
+    robot_state_sub_ = n.subscribe(vel_state_topic, 1, VelocityCallBack);
 
 	ros::Publisher state_pub_ =
 		n.advertise<geometry_msgs::Pose>(robot_state_topic, 10);
@@ -119,7 +120,7 @@ int main(int argc, char **argv)
 		pose_msg.position.z = vel;
 		state_pub_.publish(pose_msg);
 
-		rate.sleep();
+		ros::spinOnce();
 	}
 
 	return 0;
