@@ -135,18 +135,18 @@ int main(int argc, char **argv)
 			continue;
 		}
 		//CONVERT FROM QUATERNION TO JOINT ANGLE ROTATION
-
-		ysqr = transformStamped.transform.rotation.y * transformStamped.transform.rotation.y;
-		t3 = +2.0 * (transformStamped.transform.rotation.w * transformStamped.transform.rotation.z
-					 + transformStamped.transform.rotation.x * transformStamped.transform.rotation.y);
-		t4 = +1.0 - 2.0 * (ysqr + transformStamped.transform.rotation.z * transformStamped.transform.rotation.z);
+		*/
+		ysqr = odom_msg.pose.pose.orientation.y * odom_msg.pose.pose.orientation.y;
+		t3 = +2.0 * (odom_msg.pose.pose.orientation.w * odom_msg.pose.pose.orientation.z
+					 + odom_msg.pose.pose.orientation.x * odom_msg.pose.pose.orientation.y);
+		t4 = +1.0 - 2.0 * (ysqr + odom_msg.pose.pose.orientation.z * odom_msg.pose.pose.orientation.z);
 
 		pose_msg.orientation.z = atan2(t3, t4);
-		pose_msg.position.x = transformStamped.transform.translation.x;
-		pose_msg.position.y = transformStamped.transform.translation.y;
-		pose_msg.position.z = vel;
+		pose_msg.position.x = odom_msg.pose.pose.position.x;
+		pose_msg.position.y = odom_msg.pose.pose.position.y;
+		pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.x,2));
 		state_pub_.publish(pose_msg);
-
+		/*
 		link.request.link_state.pose.position.x = transformStamped.transform.translation.x;
 		link.request.link_state.pose.position.y = transformStamped.transform.translation.y;
 		link.request.link_state.pose.position.z = transformStamped.transform.translation.z;
