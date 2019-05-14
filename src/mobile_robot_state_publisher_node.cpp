@@ -31,15 +31,32 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <nav_msgs/Odometry.h>
+#include <gazebo_msgs/SetLinkState.h>
+#include <gazebo_msgs/LinkStates.h>
+#include <tf/transform_broadcaster.h>
 
 using namespace std;
 
-geometry_msgs::Vector3 vel;
+geometry_msgs::Pose pos;
+geometry_msgs::Twist vel;
+nav_msgs::Odometry odom_msg;
 
-void VelocityCallBack(const nav_msgs::Odometry& msg){
 
-vel.x = msg.twist.twist.linear.x;
-vel.y =	msg.twist.twist.linear.y;
+void VelocityCallBack(const gazebo_msgs::LinkStates& msg){
+
+    pos = msg.pose[3];
+    odom_msg.twist.twist = msg.twist[3];
+    odom_msg.pose.pose = msg.pose[3];
+    odom_msg.child_frame_id="base_link";
+    odom_msg.header.frame_id="odom";
+    odom_msg.header.stamp=ros::Time::now();
+	static tf::TransformBroadcaster br;
+	tf::Transform transform;
+	transform.setOrigin( tf::Vector3(pos.position.x,pos.position.y,pos.position.z) );
+	tf::Quaternion q(pos.orientation.x,pos.orientation.y,pos.orientation.z,pos.orientation.w);
+
+	transform.setRotation(q);
+	br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "base_link"));
 
 }
 
@@ -88,50 +105,33 @@ int main(int argc, char **argv)
     string subs_vel_;
     if (!n.getParam(ros::this_node::getName()+"/vel_subs", subs_vel_))
     {
-        ROS_ERROR_STREAM("mobile_robot_state_publisher_node Parameter " << ros::this_node::getName()+"/vel_subs not set");
-        return 0;
+       	ROS_ERROR_STREAM("mobile_robot_state_publisher_node Parameter " << ros::this_node::getName()+"/vel_subs not set");
+       	return 0;
     }
-
-    robot_state_sub_ = n.subscribe(subs_vel_, 1, VelocityCallBack);
+	robot_state_sub_ = n.subscribe(subs_vel_, 1, VelocityCallBack);
 
 	ros::Publisher state_pub_ =
 		n.advertise<geometry_msgs::PoseStamped>(robot_state_topic, 10);
 	ros::Publisher vel_pub_ =
 			n.advertise<geometry_msgs::Vector3>(vel_state_topic, 10);
 
-	tf2_ros::Buffer tfBuffer;
-	tf2_ros::TransformListener tfListener(tfBuffer);
-
 	ros::Rate rate(node_rate);
 	geometry_msgs::PoseStamped pose_msg;
 	pose_msg.header.frame_id = root_frame;
 	pose_msg.header.stamp = ros::Time::now();
+
+	geometry_msgs::Vector3 vel;
 	//Intermidiate variables
-	double ysqr, t3, t4;
+
 	geometry_msgs::TransformStamped transformStamped;
 	while (n.ok()){
-		try{
-			transformStamped = tfBuffer.lookupTransform(root_frame, base_frame,
-														ros::Time(0));
-		}
-		catch (tf2::TransformException &ex) {
-			ROS_WARN("%s",ex.what());
-			ros::Duration(1.0).sleep();
-			continue;
-		}
-		//CONVERT FROM QUATERNION TO JOINT ANGLE ROTATION
 
-		ysqr = transformStamped.transform.rotation.y * transformStamped.transform.rotation.y;
-		t3 = +2.0 * (transformStamped.transform.rotation.w * transformStamped.transform.rotation.z
-					 + transformStamped.transform.rotation.x * transformStamped.transform.rotation.y);
-		t4 = +1.0 - 2.0 * (ysqr + transformStamped.transform.rotation.z * transformStamped.transform.rotation.z);
 
-		pose_msg.pose.orientation.x = transformStamped.transform.rotation.x;
-		pose_msg.pose.orientation.y = transformStamped.transform.rotation.y;
-		pose_msg.pose.orientation.z = transformStamped.transform.rotation.z;
-		pose_msg.pose.orientation.w = transformStamped.transform.rotation.w;
-		pose_msg.pose.position.x = transformStamped.transform.translation.x;
-		pose_msg.pose.position.y = transformStamped.transform.translation.y;
+		pose_msg.orientation.z = atan2(t3, t4);
+		pose_msg.position.x = odom_msg.pose.pose;
+
+		vel.x = odom_msg.twist.twist.linear.x;
+		vel.x = odom_msg.twist.twist.linear.y;
 		state_pub_.publish(pose_msg);
 		vel_pub_.publish(vel);
 
