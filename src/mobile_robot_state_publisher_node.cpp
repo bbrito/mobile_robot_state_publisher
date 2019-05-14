@@ -127,8 +127,7 @@ int main(int argc, char **argv)
 	while (n.ok()){
 
 
-		pose_msg.orientation.z = atan2(t3, t4);
-		pose_msg.position.x = odom_msg.pose.pose;
+		pose_msg.pose = odom_msg.pose.pose;
 
 		vel.x = odom_msg.twist.twist.linear.x;
 		vel.x = odom_msg.twist.twist.linear.y;
