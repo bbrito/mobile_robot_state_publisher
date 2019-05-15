@@ -42,10 +42,18 @@ nav_msgs::Odometry odom_msg;
 
 
 void VelocityCallBack(const gazebo_msgs::LinkStates& msg){
+	int index=0;
+	std::string str2 ("base_link");
+	for(int i =0; i< sizeof(msg.name);i++){
 
-    pos = msg.pose[4];
-    odom_msg.twist.twist = msg.twist[4];
-    odom_msg.pose.pose = msg.pose[4];
+		if(msg.name[i].find(str2)!=std::string::npos)
+			break;
+		index+=1;
+	}
+	//ROS_INFO_STREAM("fOUND IN: " << index);
+    pos = msg.pose[index];
+    odom_msg.twist.twist = msg.twist[index];
+    odom_msg.pose.pose = msg.pose[index];
     odom_msg.child_frame_id="base_link";
     odom_msg.header.frame_id="odom";
     odom_msg.header.stamp=ros::Time::now();
