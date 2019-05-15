@@ -43,9 +43,9 @@ nav_msgs::Odometry odom_msg;
 
 void VelocityCallBack(const gazebo_msgs::LinkStates& msg){
 
-    pos = msg.pose[3];
-    odom_msg.twist.twist = msg.twist[3];
-    odom_msg.pose.pose = msg.pose[3];
+    pos = msg.pose[4];
+    odom_msg.twist.twist = msg.twist[4];
+    odom_msg.pose.pose = msg.pose[4];
     odom_msg.child_frame_id="base_link";
     odom_msg.header.frame_id="odom";
     odom_msg.header.stamp=ros::Time::now();
