@@ -166,6 +166,7 @@ int main(int argc, char **argv)
 		 */
 		//link_state_pub_.publish(link);
         odom_pub_.publish(odom_msg);
+        ros::Duration(0.05).sleep();
 		ros::spinOnce();
 	}
 
