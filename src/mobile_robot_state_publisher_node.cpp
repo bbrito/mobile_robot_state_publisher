@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 		pose_msg.orientation.z = atan2(t3, t4);
 		pose_msg.position.x = odom_msg.pose.pose.position.x;
 		pose_msg.position.y = odom_msg.pose.pose.position.y;
-		pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.x,2));
+		//pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.x,2));
 		state_pub_.publish(pose_msg);
 		/*
 		link.request.link_state.pose.position.x = transformStamped.transform.translation.x;
@@ -166,6 +166,7 @@ int main(int argc, char **argv)
 		 */
 		//link_state_pub_.publish(link);
         odom_pub_.publish(odom_msg);
+        ros::Duration(0.05).sleep();
 		ros::spinOnce();
 	}
 
