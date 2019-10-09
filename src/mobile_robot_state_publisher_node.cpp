@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 		vel.x = odom_msg.twist.twist.linear.y;
 		state_pub_.publish(pose_msg);
 		vel_pub_.publish(vel);
-        ros::Duration(0.01).sleep();
+        ros::Duration(0.05).sleep();
 		ros::spinOnce();
 	}
 
