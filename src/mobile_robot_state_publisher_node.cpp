@@ -57,6 +57,7 @@ void VelocityCallBack(const gazebo_msgs::LinkStates& msg){
     odom_msg.child_frame_id="base_link";
     odom_msg.header.frame_id="odom";
     odom_msg.header.stamp=ros::Time::now();
+/**/
 	static tf::TransformBroadcaster br;
 	tf::Transform transform;
 	transform.setOrigin( tf::Vector3(pos.position.x,pos.position.y,pos.position.z) );
@@ -152,7 +153,7 @@ int main(int argc, char **argv)
 		pose_msg.orientation.z = atan2(t3, t4);
 		pose_msg.position.x = odom_msg.pose.pose.position.x;
 		pose_msg.position.y = odom_msg.pose.pose.position.y;
-		pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.x,2));
+		pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.y,2));
 		state_pub_.publish(pose_msg);
 		/*
 		link.request.link_state.pose.position.x = transformStamped.transform.translation.x;
