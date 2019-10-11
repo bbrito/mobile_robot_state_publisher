@@ -153,11 +153,9 @@ int main(int argc, char **argv)
 		pose_msg.orientation.z = atan2(t3, t4);
 		pose_msg.position.x = odom_msg.pose.pose.position.x;
 		pose_msg.position.y = odom_msg.pose.pose.position.y;
-<<<<<<< HEAD
+
 		pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.y,2));
-=======
-		//pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.x,2));
->>>>>>> 354ab7b07e8fa3ee1a03424700e80bc8b75f0f21
+
 		state_pub_.publish(pose_msg);
 		/*
 		link.request.link_state.pose.position.x = transformStamped.transform.translation.x;
