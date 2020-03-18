@@ -57,7 +57,7 @@ void VelocityCallBack(const gazebo_msgs::LinkStates& msg){
     odom_msg.child_frame_id="base_link";
     odom_msg.header.frame_id="odom";
     odom_msg.header.stamp=ros::Time::now();
-/**/
+/* This is done because the ukf does not match the position in Gazebo */
 	static tf::TransformBroadcaster br;
 	tf::Transform transform;
 	transform.setOrigin( tf::Vector3(pos.position.x,pos.position.y,pos.position.z) );
