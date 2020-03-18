@@ -5,7 +5,7 @@
   <description>The mobile_robot_state_publisher package</description>
 
   <maintainer email="bruno.debrito@tudelft.nl">Bruno Brito</maintainer>
-  <maintainer email="boazfloor@gmail.com">Bruno Brito</maintainer>
+
   <author>Bruno Brito</author>
 
   <license>GPUv2</license>
@@ -15,16 +15,20 @@
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>tf</build_depend>
   <build_depend>tf2</build_depend>
   <build_depend>tf2_ros</build_depend>
   <build_depend>tf2_geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
 
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
   <exec_depend>tf2</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>tf2_geometry_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
 
 </package>
