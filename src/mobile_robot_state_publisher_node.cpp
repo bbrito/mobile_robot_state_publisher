@@ -42,7 +42,7 @@ nav_msgs::Odometry odom_msg;
 
 void VelocityCallBack(const gazebo_msgs::LinkStates& msg){
 	int index=0;
-	std::string str2 ("chassis");
+	std::string str2 ("base_link");
 	for(int i =0; i< sizeof(msg.name);i++){
 
 		if(msg.name[i].find(str2)!=std::string::npos)
