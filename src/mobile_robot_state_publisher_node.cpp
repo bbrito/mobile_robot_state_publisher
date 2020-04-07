@@ -132,6 +132,7 @@ int main(int argc, char **argv)
 	//Intermidiate variables
 	double ysqr, t3, t4;
 	geometry_msgs::TransformStamped transformStamped;
+	ros::Rate r(20.0);
 	while (n.ok()){
 		/*
 		try{
@@ -169,8 +170,8 @@ int main(int argc, char **argv)
 		 */
 		//link_state_pub_.publish(link);
         odom_pub_.publish(odom_msg);
-        ros::Duration(0.05).sleep();
 		ros::spinOnce();
+		r.sleep();
 	}
 
 	return 0;
