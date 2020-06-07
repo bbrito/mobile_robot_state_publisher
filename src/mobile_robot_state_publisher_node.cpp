@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     robot_state_sub_ = n.subscribe(vel_state_topic, 1, VelocityCallBack);
 
 	ros::Publisher state_pub_ =
-		n.advertise<geometry_msgs::Pose>(robot_state_topic, 10);
+		n.advertise<geometry_msgs::PoseStamped>(robot_state_topic, 10);
 	//ros::Publisher link_state_pub_ =
 	//		n.advertise<geometry_msgs::Pose>("/gazebo/set_link_state", 10);
 	ros::ServiceClient link_state_client_ = n.serviceClient<gazebo_msgs::SetLinkState>("/gazebo/set_link_state");
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 	tf2_ros::TransformListener tfListener(tfBuffer);
 
 	ros::Rate rate(node_rate);
-	geometry_msgs::Pose pose_msg;
+	geometry_msgs::PoseStamped pose_msg;
 
     ros::Publisher odom_pub_ = n.advertise<nav_msgs::Odometry>("/odometry/filtered", 10);
 
@@ -146,16 +146,19 @@ int main(int argc, char **argv)
 		}
 		//CONVERT FROM QUATERNION TO JOINT ANGLE ROTATION
 		*/
+		pose_msg.header.frame_id = "odom";
+		pose_msg.header.stamp = ros::Time::now();;
+
 		ysqr = odom_msg.pose.pose.orientation.y * odom_msg.pose.pose.orientation.y;
 		t3 = +2.0 * (odom_msg.pose.pose.orientation.w * odom_msg.pose.pose.orientation.z
 					 + odom_msg.pose.pose.orientation.x * odom_msg.pose.pose.orientation.y);
 		t4 = +1.0 - 2.0 * (ysqr + odom_msg.pose.pose.orientation.z * odom_msg.pose.pose.orientation.z);
 
-		pose_msg.orientation.z = atan2(t3, t4);
-		pose_msg.position.x = odom_msg.pose.pose.position.x;
-		pose_msg.position.y = odom_msg.pose.pose.position.y;
+		pose_msg.pose.orientation.z = atan2(t3, t4);
+		pose_msg.pose.position.x = odom_msg.pose.pose.position.x;
+		pose_msg.pose.position.y = odom_msg.pose.pose.position.y;
 
-		pose_msg.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.y,2));
+		pose_msg.pose.position.z = std::sqrt(std::pow(odom_msg.twist.twist.linear.x,2)+std::pow(odom_msg.twist.twist.linear.y,2));
 
 		state_pub_.publish(pose_msg);
 		/*
