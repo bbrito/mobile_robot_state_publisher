@@ -1,7 +1,7 @@
 ## Driver Parameters
 
 #publisher rate
-rate: 40
+rate: 20
 #robot base frame
 base_frame: base_link
 #map frame
